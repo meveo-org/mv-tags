@@ -19,6 +19,7 @@ To experiment with the MvTags component.
   values="ABC, 123"                     // assign tags in a string
   .tags="${["XYZ", "987"]}"             // assign tags in an array
   @tags-changed="${this.tagsChanged}"   // custom event dispatched when a tag is added or removed
+  placeholder="Enter tag"               // placeholder to show on input
 ></mv-tags>
 ```
 

@@ -5,7 +5,8 @@ export class MvTags extends LitElement {
     return {
       values: { type: String, attribute: true },
       value: { type: String, attribute: false, reflect: true },
-      tags: { type: Array, attribute: false, reflect: true }
+      tags: { type: Array, attribute: false, reflect: true },
+      placeholder: { type: String, attribute: true }
     };
   }
 
@@ -70,6 +71,7 @@ export class MvTags extends LitElement {
     super();
     this.value = "";
     this.tags = [];
+    this.placeholder = "";
   }
 
   render() {
@@ -85,7 +87,11 @@ export class MvTags extends LitElement {
               )
             : html``}
         </ul>
-        <input @keyup="${this.inputChange}" .value="${this.value}" />
+        <input
+          @keyup="${this.inputChange}"
+          .value="${this.value}"
+          placeholder="${this.placeholder}"
+        />
       </div>
     `;
   }
