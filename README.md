@@ -16,10 +16,11 @@ To experiment with the MvTags component.
 
 ```html
 <mv-tags
-  values="ABC, 123"                     // assign tags in a string
   .tags="${["XYZ", "987"]}"             // assign tags in an array
-  @tags-changed="${this.tagsChanged}"   // custom event dispatched when a tag is added or removed
+  @add-tag="${this.addTag}"             // custom event dispatched when a tag is added
+  @remove-tag="${this.removeTag}"       // custom event dispatched when a tag is removed
   placeholder="Enter tag"               // placeholder to show on input
+  has-error                             // render with error borders
 ></mv-tags>
 ```
 
