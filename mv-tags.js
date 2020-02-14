@@ -49,6 +49,7 @@ export class MvTags extends LitElement {
         display: flex;
         flex-wrap: wrap;
         border-radius: var(--border-radius);
+        background-color: #FFFFFF;
       }
 
       .mv-tags:hover,
@@ -175,6 +176,11 @@ export class MvTags extends LitElement {
     } else {
       this.value = value;
     }
+    this.dispatchEvent(
+      new CustomEvent("change-tag", {
+        detail: { value }
+      })
+    );
   };
 
   removeTag = index => () => {
