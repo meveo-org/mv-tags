@@ -7,7 +7,11 @@ export class MvTags extends LitElement {
       tags: { type: Array, attribute: false, reflect: true },
       focus: { type: Boolean, attribute: false, reflect: true },
       hasError: { type: Boolean, attribute: "has-error", reflect: true },
-      placeholder: { type: String, attribute: true }
+      placeholder: { type: String, attribute: true },
+
+      //  valid theme values are: "light", "dark"
+      //    default: "light"
+      theme: { type: String, attribute: true }
     };
   }
 
@@ -36,6 +40,8 @@ export class MvTags extends LitElement {
           inset 0 0 9px 0 rgba(229, 47, 47, 0.3)
         );
         --border-radius: 5px;
+        --light-background: var(--mv-tags-light-background, #1e87f0);
+        --dark-background: var(--mv-tags-dark-background, #373E48);
       }
 
       a:hover {
@@ -81,7 +87,7 @@ export class MvTags extends LitElement {
         margin: 0.2em;
         padding: 0.3em 0.5em;
         color: #fff;
-        background-color: #1e87f0;
+        background-color: var(--background-color);
         border-radius: 5px;
       }
 
@@ -107,6 +113,14 @@ export class MvTags extends LitElement {
         color: var(--placeholder-color);
         font-weight: 100;
       }
+      
+      .light {
+        --background-color: var(--light-background);
+      }
+      
+      .dark {
+        --background-color: var(--dark-background);
+      }
     `;
   }
 
@@ -117,6 +131,7 @@ export class MvTags extends LitElement {
     this.placeholder = "";
     this.focus = false;
     this.hasError = false;
+    this.theme = "light";
   }
 
   render() {
@@ -125,7 +140,7 @@ export class MvTags extends LitElement {
     const errorClass = this.hasError ? " error" : "";
     const componentClass = `mv-tags${focusClass}${errorClass}`;
     return html`
-      <div class="${componentClass}">
+      <div class="${componentClass} ${this.theme}">
         <ul>
           ${hasTags
             ? this.tags.map(
