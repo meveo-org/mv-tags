@@ -30,9 +30,9 @@ export class MvTagsDemo extends LitElement {
         width: 120px;
         margin-left: 10px;
         border:2px solid red;
-        -moz-border-radius:8px;
-        -webkit-border-radius:8px;	
-        border-radius:8px;
+        -moz-border-radius: 8px;
+        -webkit-border-radius: 8px;	
+        border-radius: 8px;
         color: #818181;
       }
       
@@ -47,27 +47,25 @@ export class MvTagsDemo extends LitElement {
     super();
     this.tags = ["abc", "123"];
     this.detail = {};
-    this.theme = "dark";
+    this.theme = "light";
   }
 
   render() {
-    const isLightTheme = this.theme === "light";
-    const tagsTheme = isLightTheme ? "dark" : "light";
-    const textColor = `color: ${isLightTheme ? "" : "#FFFFFF"}`;
+    const { theme } = this;
     return html`
       <fieldset>
         <legend>Theme</legend>
-        <label><input type="radio" name="theme" value="light" @change="${this.radioChange}" />Light</label>
-        <label><input type="radio" name="theme" value="dark" checked @change="${this.radioChange}" />Dark</label>
+        <label><input type="radio" name="theme" value="light" checked @change="${this.changeTheme}" />Light</label>
+        <label><input type="radio" name="theme" value="dark" @change="${this.changeTheme}" />Dark</label>
       </fieldset>
-      <mv-container .theme="${this.theme}" style="${textColor}">
+      <mv-container .theme="${theme}">
         <h3>.tags="$ {["abc", "123"]}"</h3>
         <mv-tags
           .tags="${this.tags}"
           @add-tag="${this.updateTags}"
           @remove-tag="${this.removeTags}"
           placeholder="Enter tags..."
-          .theme="${tagsTheme}"
+          .theme="${theme}"
         ></mv-tags>
         <div class="tags">
           <b>Tags : </b>
@@ -103,13 +101,9 @@ export class MvTagsDemo extends LitElement {
     this.detail = detail;
   };
 
-  radioChange = originalEvent => {
+  changeTheme = originalEvent => {
     const { target: { value } } = originalEvent;
-    if (value === "light") {
-      this.theme = "light";
-    } else {
-      this.theme = "dark";
-    }
+    this.theme = value;
   };
 }
 
