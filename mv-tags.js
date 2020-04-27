@@ -51,7 +51,7 @@ export class MvTags extends LitElement {
       .mv-tags {
         border: var(--border);
         margin: var(--margin);
-        padding: 0 0.3em;
+        padding: var(--mv-tags-padding, 4px 8px);
         display: flex;
         flex-wrap: wrap;
         border-radius: var(--border-radius);
