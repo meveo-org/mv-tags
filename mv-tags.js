@@ -8,10 +8,11 @@ export class MvTags extends LitElement {
       focus: { type: Boolean, attribute: false, reflect: true },
       hasError: { type: Boolean, attribute: "has-error", reflect: true },
       placeholder: { type: String, attribute: true },
+      required: { type: Boolean, attribute: true, reflect: true },
 
       //  valid theme values are: "light", "dark"
       //    default: "light"
-      theme: { type: String, attribute: true }
+      theme: { type: String, attribute: true },
     };
   }
 
@@ -27,6 +28,10 @@ export class MvTags extends LitElement {
         --border: var(--mv-tags-border, 1px solid #4e686d);
         --active-border: var(--mv-tags-active-border, 1px solid #1d9bc9);
         --placeholder-color: var(--mv-tags-placeholder-color, #c8c6c6);
+        --required-placeholder-color: var(
+          --mv-tags-required-placeholder-color,
+          #818181
+        );
         --active-box-shadow: var(
           --mv-tags-active-box-shadow,
           inset 0 0 9px 0 rgba(29, 155, 201, 0.3)
@@ -41,7 +46,7 @@ export class MvTags extends LitElement {
         );
         --border-radius: 5px;
         --light-background: var(--mv-tags-light-background, #1e87f0);
-        --dark-background: var(--mv-tags-dark-background, #373E48);
+        --dark-background: var(--mv-tags-dark-background, #373e48);
       }
 
       a:hover {
@@ -51,11 +56,13 @@ export class MvTags extends LitElement {
       .mv-tags {
         border: var(--border);
         margin: var(--margin);
+        min-width: var(--min-width);
+        max-width: var(--max-width);
         padding: var(--mv-tags-padding, 4px 8px);
         display: flex;
         flex-wrap: wrap;
         border-radius: var(--border-radius);
-        background-color: #FFFFFF;
+        background-color: #ffffff;
       }
 
       .mv-tags:hover,
@@ -81,6 +88,8 @@ export class MvTags extends LitElement {
         margin: 0;
         display: flex;
         flex-wrap: wrap;
+        min-width: var(--min-width);
+        max-width: var(--max-width);
       }
 
       .mv-tags ul li {
@@ -92,13 +101,13 @@ export class MvTags extends LitElement {
       }
 
       .mv-tags ul li a {
-        margin: 0.5em 0.2em;
+        margin: 0.4em 0.2em;
         text-decoration: none;
         color: inherit;
       }
 
       .mv-tags input {
-        margin: 0.5em 0.3em;
+        margin: 0.4em 0.3em;
         padding: 0;
         box-sizing: border-box;
         flex-grow: 1;
@@ -107,17 +116,24 @@ export class MvTags extends LitElement {
         font-family: inherit;
         font-size: inherit;
         color: var(--color);
+        min-width: var(--min-width);
+        max-width: var(--max-width);
       }
 
       ::placeholder {
         color: var(--placeholder-color);
         font-weight: 100;
       }
-      
+
+      .required::placeholder {
+        font-weight: 700;
+        color: var(--required-placeholder-color);
+      }
+
       .light {
         --background-color: var(--light-background);
       }
-      
+
       .dark {
         --background-color: var(--dark-background);
       }
@@ -131,6 +147,7 @@ export class MvTags extends LitElement {
     this.placeholder = "";
     this.focus = false;
     this.hasError = false;
+    this.required = false;
     this.theme = "light";
   }
 
@@ -156,6 +173,7 @@ export class MvTags extends LitElement {
           @focusout="${this.focusOutInput}"
           .value="${this.value}"
           placeholder="${this.placeholder}"
+          class="${this.required ? "required" : ""}"
         />
       </div>
     `;
@@ -169,9 +187,9 @@ export class MvTags extends LitElement {
     this.focus = false;
   };
 
-  inputChange = event => {
+  inputChange = (event) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
     const hasValue = !!value.trim();
     const hasTags = this.tags && this.tags.length > 0;
@@ -183,7 +201,7 @@ export class MvTags extends LitElement {
       this.value = "";
       this.dispatchEvent(
         new CustomEvent("add-tag", {
-          detail: { tags, value, index: this.tags.length }
+          detail: { tags, value, index: this.tags.length },
         })
       );
     } else if (isBackspace && hasTags && !hasValue) {
@@ -193,16 +211,16 @@ export class MvTags extends LitElement {
     }
     this.dispatchEvent(
       new CustomEvent("change-tag", {
-        detail: { value }
+        detail: { value },
       })
     );
   };
 
-  removeTag = index => () => {
+  removeTag = (index) => () => {
     const tags = [...this.tags.slice(0, index), ...this.tags.slice(index + 1)];
     this.dispatchEvent(
       new CustomEvent("remove-tag", {
-        detail: { tags, value: this.tags[index], index }
+        detail: { tags, value: this.tags[index], index },
       })
     );
   };
