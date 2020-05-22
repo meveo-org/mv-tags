@@ -3,7 +3,7 @@ import { LitElement, html, css } from "lit-element";
 export class MvTags extends LitElement {
   static get properties() {
     return {
-      value: { type: String, attribute: false, reflect: true },
+      value: { type: String, attribute: true, reflect: true },
       tags: { type: Array, attribute: false, reflect: true },
       focus: { type: Boolean, attribute: false, reflect: true },
       hasError: { type: Boolean, attribute: "has-error", reflect: true },
@@ -208,12 +208,12 @@ export class MvTags extends LitElement {
       this.removeTag(this.tags.length - 1)();
     } else {
       this.value = value;
+      this.dispatchEvent(
+        new CustomEvent("change-tag", {
+          detail: { value },
+        })
+      );
     }
-    this.dispatchEvent(
-      new CustomEvent("change-tag", {
-        detail: { value },
-      })
-    );
   };
 
   removeTag = (index) => () => {
