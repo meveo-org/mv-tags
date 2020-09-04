@@ -9,6 +9,7 @@ export class MvTags extends LitElement {
       hasError: { type: Boolean, attribute: "has-error", reflect: true },
       placeholder: { type: String, attribute: true },
       required: { type: Boolean, attribute: true, reflect: true },
+      immediate: { type: Boolean, attribute: true, reflect: true },
 
       //  valid theme values are: "light", "dark"
       //    default: "light"
@@ -148,6 +149,7 @@ export class MvTags extends LitElement {
     this.focus = false;
     this.hasError = false;
     this.required = false;
+    this.immediate = false;
     this.theme = "light";
   }
 
@@ -183,7 +185,23 @@ export class MvTags extends LitElement {
     this.focus = true;
   };
 
-  focusOutInput = () => {
+  focusOutInput = (event) => {
+    const {
+      target: { value },
+    } = event;
+    const hasValue = !!value.trim();
+    if (this.immediate && hasValue) {
+      this.value = "";
+      this.dispatchEvent(
+        new CustomEvent("add-tag", {
+          detail: {
+            tags: [...this.tags, value],
+            value,
+            index: this.tags.length,
+          },
+        })
+      );
+    }
     this.focus = false;
   };
 
