@@ -170,7 +170,7 @@ export class MvTags extends LitElement {
             : html``}
         </ul>
         <input
-          @keyup="${this.inputChange}"
+          @keydown = "${this.inputChange}"
           @focusin="${this.focusInInput}"
           @focusout="${this.focusOutInput}"
           .value="${this.value}"
@@ -214,7 +214,9 @@ export class MvTags extends LitElement {
     const isComma = event.key === ",";
     const isEnter = event.key === "Enter" || isComma;
     const isBackspace = event.key === "Backspace";
-    if (isEnter && hasValue) {
+    const isTab = event.key === "Tab";
+    if ((isEnter && hasValue) || (isTab && hasValue)) {
+      event.preventDefault()
       const tags = [...this.tags, isComma ? value.replace(",", "") : value];
       this.value = "";
       this.dispatchEvent(
