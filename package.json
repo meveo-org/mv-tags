@@ -1,6 +1,6 @@
 {
   "name": "@meveo-org/mv-tags",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MvTags is a Meveo component (based on lit-element) that renders an input element that shows tags.",
   "main": "mv-tags.js",
   "scripts": {
