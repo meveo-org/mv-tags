@@ -4,7 +4,9 @@
   "description": "MvTags is a Meveo component (based on lit-element) that renders an input element that shows tags.",
   "main": "mv-tags.js",
   "scripts": {
-    "serve": "es-dev-server --node-resolve --watch"
+    "serve": "es-dev-server --node-resolve --watch",
+    "watch": "webpack build --watch",
+    "start": "webpack serve"
   },
   "repository": {
     "type": "git",
@@ -18,5 +20,9 @@
   "homepage": "https://github.com/meveo-org/mv-tags#readme",
   "devDependencies": {
     "es-dev-server": "^1.46.1"
+  },
+  "dependencies": {
+    "webpack": "^5.77.0",
+    "webpack-cli": "^5.0.1"
   }
 }
