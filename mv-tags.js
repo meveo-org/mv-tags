@@ -189,7 +189,24 @@ export class MvTags extends LitElement {
     const {
       target: { value },
     } = event;
-    const hasValue = !!value.trim();
+
+
+    const isComma = event.key === ",";
+
+    console.log(this.value);
+
+
+
+    const tags = [...this.tags, isComma ? value.replace(",", "") : value];
+      this.value = "";
+      this.dispatchEvent(
+        new CustomEvent("add-tag", {
+          detail: { tags, value, index: this.tags.length },
+        })
+      );
+
+
+/*
     if (this.immediate && hasValue) {
       this.value = "";
       this.dispatchEvent(
@@ -202,7 +219,7 @@ export class MvTags extends LitElement {
         })
       );
     }
-    this.focus = false;
+    this.focus = false;*/
   };
 
   inputChange = (event) => {
@@ -215,7 +232,7 @@ export class MvTags extends LitElement {
     const isEnter = event.key === "Enter" || isComma;
     const isBackspace = event.key === "Backspace";
     const isTab = event.key === "Tab";
-    if ((isEnter && hasValue) || (isTab && hasValue)) {
+    if ((isEnter && hasValue) || (isTab && hasValue) ){
       event.preventDefault()
       const tags = [...this.tags, isComma ? value.replace(",", "") : value];
       this.value = "";
