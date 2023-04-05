@@ -1,24 +1,55 @@
-import { LitElement, html, css } from "lit";
-
+import {
+  LitElement,
+  html,
+  css
+} from "lit";
 export class MvTags extends LitElement {
   static get properties() {
     return {
-      value: { type: String, attribute: true, reflect: true },
-      tags: { type: Array, attribute: false, reflect: true },
-      focus: { type: Boolean, attribute: false, reflect: true },
-      hasError: { type: Boolean, attribute: "has-error", reflect: true },
-      placeholder: { type: String, attribute: true },
-      required: { type: Boolean, attribute: true, reflect: true },
-      immediate: { type: Boolean, attribute: true, reflect: true },
-
+      value: {
+        type: String,
+        attribute: true,
+        reflect: true
+      },
+      tags: {
+        type: Array,
+        attribute: false,
+        reflect: true
+      },
+      focus: {
+        type: Boolean,
+        attribute: false,
+        reflect: true
+      },
+      hasError: {
+        type: Boolean,
+        attribute: "has-error",
+        reflect: true
+      },
+      placeholder: {
+        type: String,
+        attribute: true
+      },
+      required: {
+        type: Boolean,
+        attribute: true,
+        reflect: true
+      },
+      immediate: {
+        type: Boolean,
+        attribute: true,
+        reflect: true
+      },
       //  valid theme values are: "light", "dark"
       //    default: "light"
-      theme: { type: String, attribute: true },
+      theme: {
+        type: String,
+        attribute: true
+      },
     };
   }
-
   static get styles() {
-    return css`
+    return css `
       :host {
         font-family: var(--font-family, MuseoSans);
         font-size: var(--font-size-m, 16px);
@@ -49,11 +80,9 @@ export class MvTags extends LitElement {
         --light-background: var(--mv-tags-light-background, #1e87f0);
         --dark-background: var(--mv-tags-dark-background, #373e48);
       }
-
       a:hover {
         cursor: pointer;
       }
-
       .mv-tags {
         border: var(--border);
         margin: var(--margin);
@@ -65,24 +94,20 @@ export class MvTags extends LitElement {
         border-radius: var(--border-radius);
         background-color: #ffffff;
       }
-
       .mv-tags:hover,
       .mv-tags.focus {
         border: var(--active-border);
         box-shadow: var(--active-box-shadow);
       }
-
       .mv-tags.error,
       .mv-tags.error:hover,
       .mv-tags.error.focus {
         border: var(--error-border);
       }
-
       .mv-tags.error:hover,
       .mv-tags.error.focus {
         box-shadow: var(--error-box-shadow);
       }
-
       .mv-tags > ul {
         list-style: none;
         padding: 0;
@@ -92,7 +117,6 @@ export class MvTags extends LitElement {
         min-width: var(--min-width);
         max-width: var(--max-width);
       }
-
       .mv-tags ul li {
         margin: 0.2em;
         padding: 0.3em 0.5em;
@@ -100,13 +124,11 @@ export class MvTags extends LitElement {
         background-color: var(--background-color);
         border-radius: 5px;
       }
-
       .mv-tags ul li a {
         margin: 0.4em 0.2em;
         text-decoration: none;
         color: inherit;
       }
-
       .mv-tags input {
         margin: 0.4em 0.3em;
         padding: 0;
@@ -120,27 +142,22 @@ export class MvTags extends LitElement {
         min-width: var(--min-width);
         max-width: var(--max-width);
       }
-
       ::placeholder {
         color: var(--placeholder-color);
         font-weight: 100;
       }
-
       .required::placeholder {
         font-weight: 700;
         color: var(--required-placeholder-color);
       }
-
       .light {
         --background-color: var(--light-background);
       }
-
       .dark {
         --background-color: var(--dark-background);
       }
     `;
   }
-
   constructor() {
     super();
     this.value = "";
@@ -152,13 +169,12 @@ export class MvTags extends LitElement {
     this.immediate = false;
     this.theme = "light";
   }
-
   render() {
     const hasTags = this.tags && this.tags.length > 0;
     const focusClass = this.focus ? " focus" : "";
     const errorClass = this.hasError ? " error" : "";
     const componentClass = `mv-tags${focusClass}${errorClass}`;
-    return html`
+    return html `
       <div class="${componentClass} ${this.theme}">
         <ul>
           ${hasTags
@@ -180,33 +196,16 @@ export class MvTags extends LitElement {
       </div>
     `;
   }
-
   focusInInput = () => {
     this.focus = true;
   };
-
   focusOutInput = (event) => {
     const {
-      target: { value },
+      target: {
+        value
+      },
     } = event;
-
-
     const isComma = event.key === ",";
-
-    console.log(this.value);
-
-
-
-    const tags = [...this.tags, isComma ? value.replace(",", "") : value];
-      this.value = "";
-      this.dispatchEvent(
-        new CustomEvent("add-tag", {
-          detail: { tags, value, index: this.tags.length },
-        })
-      );
-
-
-/*
     if (this.immediate && hasValue) {
       this.value = "";
       this.dispatchEvent(
@@ -219,48 +218,72 @@ export class MvTags extends LitElement {
         })
       );
     }
-    this.focus = false;*/
+    const tags = [...this.tags, isComma ? value.replace(",", "") : value];
+    this.value = "";
+    if (value) {
+      this.dispatchEvent(
+        new CustomEvent("add-tag", {
+          detail: {
+            tags,
+            value,
+            index: this.tags.length
+          },
+        })
+      );
+    }
+    this.focus = false;
   };
-
   inputChange = (event) => {
     const {
-      target: { value },
+      target: {
+        value
+      },
     } = event;
     const hasValue = !!value.trim();
     const hasTags = this.tags && this.tags.length > 0;
     const isComma = event.key === ",";
     const isEnter = event.key === "Enter" || isComma;
     const isBackspace = event.key === "Backspace";
-    const isTab = event.key === "Tab";
-    if ((isEnter && hasValue) || (isTab && hasValue) ){
+    const isTab = event.key === "Tab" || isComma;
+    if ((isEnter && hasValue) || (isTab && hasValue)) {
       event.preventDefault()
       const tags = [...this.tags, isComma ? value.replace(",", "") : value];
       this.value = "";
-      this.dispatchEvent(
-        new CustomEvent("add-tag", {
-          detail: { tags, value, index: this.tags.length },
-        })
-      );
+      if (value) {
+        this.dispatchEvent(
+          new CustomEvent("add-tag", {
+            detail: {
+              tags,
+              value,
+              index: this.tags.length
+            },
+          })
+        )
+      };
     } else if (isBackspace && hasTags && !hasValue) {
       this.removeTag(this.tags.length - 1)();
     } else {
       this.value = value;
       this.dispatchEvent(
         new CustomEvent("change-tag", {
-          detail: { value },
+          detail: {
+            value
+          },
         })
       );
     }
   };
-
   removeTag = (index) => () => {
     const tags = [...this.tags.slice(0, index), ...this.tags.slice(index + 1)];
     this.dispatchEvent(
       new CustomEvent("remove-tag", {
-        detail: { tags, value: this.tags[index], index },
+        detail: {
+          tags,
+          value: this.tags[index],
+          index
+        },
       })
     );
   };
 }
-
 customElements.define("mv-tags", MvTags);
